@@ -34,11 +34,11 @@ pipeline {
             }
         }
         stage('Run Container') {
-            steps { sh '''
-  export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
-                docker rm -f my-web || true
-                docker run -d --name my-web -p 9090:80 my-web-cicd
-         '''
+            steps {  sh "docker run -d --name my-web-app -p 8080:80 my-web-cicd"}
+        }
+        stage('Cleanup') {
+            steps {
+                sh 'docker rm -f my-web-app || exit 0'
             }
         }
     }
