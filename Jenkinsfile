@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-               git url: 'https://github.com/KonJengz/jenkins-101.git', credentialsId: 'github-konjengz-pat', branch: 'main'
+               git url: 'https://github.com/KonJengz/jenkins-101.git', branch: 'main'
             }
         }
         
