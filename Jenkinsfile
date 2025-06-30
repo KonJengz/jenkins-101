@@ -1,6 +1,10 @@
 pipeline {
     agent any
     
+     tools {
+        dockerTool 'docker-latest' // <-- แก้ไขเป็น dockerTool
+    }
+    
     stages {
         stage('Clone') {
             steps {
