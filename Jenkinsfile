@@ -40,13 +40,13 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-            sh ' which docker && docker build -t my-web-cicd .'
+            sh 'docker build -t my-web-cicd .'
             }
         }
         ///usr/local/bin/docker
         stage('Run Container') {
             steps { sh '''
-  export PATH=/usr/local/bin/docker:$PATH
+                #!/bin/bash
                 docker rm -f my-web || true
                 docker run -d --name my-web -p 9090:80 my-web-cicd
          '''
