@@ -1,6 +1,19 @@
 pipeline {
     agent any
     stages {
+         stage('Checkout') {
+            steps {
+                // Clean the workspace before checkout
+                cleanWs()
+
+                // Explicitly check out the code
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']], // or your specific branch
+                    userRemoteConfigs: [[url: 'https://github.com/KonJengz/jenkins-101.git']]
+                ])
+            }
+        }
         stage('Clone') {
             steps {
                 git 'https://github.com/KonJengz/jenkins-101.git'
