@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-    sh 'export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH && docker build -t my-web-cicd .'
+    sh 'export PATH=/usr/local/bin/docker:$PATH && docker build -t my-web-cicd .'
             }
         }
         stage('Run Container') {
