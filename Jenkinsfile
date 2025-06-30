@@ -2,8 +2,8 @@ pipeline {
     agent any
     
     tools {
-        // ใช้ชื่อ Docker tool ที่คุณตั้งค่าไว้ใน Global Tool Configuration
-        docker 'docker-latest' 
+        // แก้ไขจาก 'docker' เป็น 'dockerTool' ให้ถูกต้องตาม Syntax ของ Jenkins
+        dockerTool 'docker-latest' 
     }
     
     stages {
@@ -15,19 +15,17 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                // ไม่ต้อง export PATH อีกต่อไป!
+                // ตอนนี้สามารถเรียก docker ได้โดยตรงและถูกต้อง
                 sh 'docker build -t my-web-cicd .'
             }
         }
         
         stage('Run Container') {
             steps {
-                // รวมคำสั่งไว้ใน sh block เดียวกันเพื่อความเรียบร้อย
                 sh '''
                     docker rm -f my-web || true
                     docker run -d --name my-web -p 8080:80 my-web-cicd
                 '''
-                // หมายเหตุ: `|| true` ทำหน้าที่เหมือน `|| exit 0` คือไม่ให้ build fail ถ้า container ไม่มีอยู่
             }
         }
     }
