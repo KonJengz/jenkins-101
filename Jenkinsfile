@@ -1,11 +1,6 @@
 pipeline {
     agent any
     
-    tools {
-        // แก้ไขจาก 'docker' เป็น 'dockerTool' ให้ถูกต้องตาม Syntax ของ Jenkins
-        dockerTool 'docker-latest' 
-    }
-    
     stages {
         stage('Clone') {
             steps {
