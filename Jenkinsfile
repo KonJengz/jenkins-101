@@ -1,20 +1,33 @@
 pipeline {
     agent any
+    
+    tools {
+        // ใช้ชื่อ Docker tool ที่คุณตั้งค่าไว้ใน Global Tool Configuration
+        docker 'docker-latest' 
+    }
+    
     stages {
         stage('Clone') {
             steps {
                git url: 'https://github.com/KonJengz/jenkins-101.git', credentialsId: 'github-konjengz-pat', branch: 'main'
             }
         }
-         stage('Build Docker Image') {
+        
+        stage('Build Docker Image') {
             steps {
-            sh 'export PATH=/usr/local/bin/docker:$PATH && docker build -t my-web-cicd .'
+                // ไม่ต้อง export PATH อีกต่อไป!
+                sh 'docker build -t my-web-cicd .'
             }
         }
+        
         stage('Run Container') {
             steps {
-                sh 'docker rm -f my-web || exit 0'
-                sh 'docker run -d --name my-web -p 8080:80 my-web-cicd'
+                // รวมคำสั่งไว้ใน sh block เดียวกันเพื่อความเรียบร้อย
+                sh '''
+                    docker rm -f my-web || true
+                    docker run -d --name my-web -p 8080:80 my-web-cicd
+                '''
+                // หมายเหตุ: `|| true` ทำหน้าที่เหมือน `|| exit 0` คือไม่ให้ build fail ถ้า container ไม่มีอยู่
             }
         }
     }
